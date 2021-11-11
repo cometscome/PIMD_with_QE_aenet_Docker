@@ -1,0 +1,55 @@
+--- ../source/makefile	2020-03-16 04:47:00.000000000 +0000
++++ makefile	2021-10-18 02:34:35.375253007 +0000
+@@ -10,18 +10,23 @@
+ #     Fortran compiler
+ #-----------------------------------------------------------------------
+ 
+-FCMP = mpif90
++#FCMP = mpiifort
++FCMP = mpif90 
+ 
+ #-----------------------------------------------------------------------
+ #     machine dependent compile options
+ #-----------------------------------------------------------------------
+ 
+ #     MAC OSX:
+-OPTS   = -g -O4 -Wall -framework Accelerate -fbounds-check \
+-         -Wuninitialized -fbacktrace
++#OPTS   = -g -O4 -Wall -framework Accelerate -fbounds-check \
++#         -Wuninitialized -fbacktrace
++
++OPTS   = -warn all -O2 -w
+ 
+ #     compile PIMD with lapack
+ # LAPACK = -Dlapack
++MKLROOT = /opt/intel/oneapi/mkl/latest
++ LAPACK = -llapack -lblas
+ 
+ #     compile PIMD without lapack
+ # LAPACK = -Dnolapack
+@@ -128,10 +133,10 @@
+ #-----------------------------------------------------------------------
+ 
+ #     compile PIMD with QE
+-# QE = -Dqe
++ QE = -Dqe
+ 
+ #     compile PIMD without QE
+-QE =
++#QE =
+ 
+ #     libraries
+ ifdef QE
+@@ -144,10 +149,10 @@
+ #-----------------------------------------------------------------------
+ 
+ #     compile PIMD with AENET
+-# AENET = -Daenet
++ AENET = -Daenet
+ 
+ #     compile PIMD without AENET
+-AENET =
++#AENET =
+ 
+ #     directory of AENET
+ ifdef AENET
