@@ -1,0 +1,56 @@
+--- ../source/makefile	2022-09-05 14:10:18.000000000 +0900
++++ makefile	2022-10-24 14:53:11.000000000 +0900
+@@ -10,7 +10,8 @@
+ #     Fortran compiler
+ #-----------------------------------------------------------------------
+ 
+-FCMP = mpif90
++#FCMP = mpif90
++FCMP = mpiifort
+ 
+ #-----------------------------------------------------------------------
+ #     C compiler
+@@ -23,11 +24,14 @@
+ #-----------------------------------------------------------------------
+ 
+ #     MAC OSX:
+-OPTS = -g -Ofast -Wall -framework Accelerate
+-OPTS += -fbounds-check -Wuninitialized -fbacktrace
++#OPTS = -g -Ofast -Wall -framework Accelerate
++#OPTS += -fbounds-check -Wuninitialized -fbacktrace
++OPTS = -warn all -O2 -w
+ #OPTS += -fallow-argument-mismatch
+ 
+ #     compile PIMD with lapack
++MKLROOT = /opt/intel/oneapi/mkl/latest
++LAPACK = -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -lmkl_blacs_intelmpi_lp64 -liomp5 -lpthread -lm -ldl 
+ # LAPACK = -Dlapack
+ 
+ #     compile PIMD without lapack
+@@ -135,10 +139,10 @@
+ #-----------------------------------------------------------------------
+ 
+ #     compile PIMD with QE
+-# QE = -Dqe
++ QE = -Dqe
+ 
+ #     compile PIMD without QE
+-QE =
++#QE =
+ 
+ #     libraries
+ ifdef QE
+@@ -160,11 +164,11 @@
+ AENETFLAG += -Dnlist
+ 
+ #     reset AENET
+-AENET =
++#AENET =
+ # AENET = -Daenet
+ 
+ #     compile PIMD with AENET
+-# AENET += -Daenet2 $(AENETFLAG)
++ AENET += -Daenet2 $(AENETFLAG)
+ 
+ #     directory of AENET
+ ifdef AENET
