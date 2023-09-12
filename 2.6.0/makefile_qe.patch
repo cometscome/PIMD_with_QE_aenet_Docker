@@ -1,0 +1,59 @@
+--- /home/yuki/pimd/source/makefile	2023-03-17 13:05:44.000000000 +0900
++++ /home/yuki/pimd/compile/makefile	2023-09-12 17:32:43.822487437 +0900
+@@ -10,7 +10,8 @@
+ #     Fortran compiler
+ #-----------------------------------------------------------------------
+ 
+-FCMP = mpif90
++#FCMP = mpif90
++FCMP = mpiifort
+ #FCMP = mpiifort -g -O2 -traceback
+ 
+ #-----------------------------------------------------------------------
+@@ -24,14 +25,17 @@ CC = gcc
+ #-----------------------------------------------------------------------
+ 
+ #     MAC OSX:
+-OPTS = -g -Ofast -Wall -framework Accelerate
+-OPTS += -fbounds-check -Wuninitialized -fbacktrace
++#OPTS = -g -Ofast -Wall -framework Accelerate
++#OPTS += -fbounds-check -Wuninitialized -fbacktrace
++OPTS = -warn all -O2 -w
+ # OPTS += -fallow-argument-mismatch
+ 
+ #     compile PIMD with lapack
+ # LAPACK = -Dlapack
+ 
+ #     compile PIMD without lapack
++MKLROOT = /opt/intel/oneapi/mkl/latest
++LAPACK =  -I"${MKLROOT}/include"  -L${MKLROOT}/lib/intel64 -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_blacs_intelmpi_lp64 -lpthread -lm -ldl
+ # LAPACK = -Dnolapack
+ #LAPACK = -lmkl_gf_lp64  -lmkl_sequential -lmkl_core
+ 
+@@ -153,10 +157,10 @@ endif
+ #-----------------------------------------------------------------------
+ 
+ #     compile PIMD with QE
+-# QE = -Dqe
++ QE = -Dqe
+ 
+ #     compile PIMD without QE
+-QE =
++#QE =
+ 
+ #     libraries
+ ifdef QE
+@@ -179,11 +183,11 @@ AENETFLAG =
+ AENETFLAG += -Dnlist
+ 
+ #     reset AENET
+-AENET =
++#AENET =
+ # AENET = -Daenet
+ 
+ #     compile PIMD with AENET
+-# AENET += -Daenet2 $(AENETFLAG)
++ AENET += -Daenet2 $(AENETFLAG)
+ 
+ #     directory of AENET
+ ifdef AENET
